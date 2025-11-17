@@ -20,8 +20,8 @@ logger = logging.getLogger(__name__)
 
 # Initialize FastAPI app
 app = FastAPI(
-    title="Content Summarization API",
-    description="API for generating AI-powered summaries of content pages with streaming support",
+    title="Content Personalization API",
+    description="API for generating AI-powered summaries and personalized content with streaming support",
     version="1.0.0"
 )
 
@@ -37,22 +37,43 @@ app.add_middleware(
 
 @app.get("/health")
 async def health_check():
-    """Health check endpoint"""
-    return {"status": "healthy", "service": "content-summarization-api"}
+    """
+    Health check endpoint
+    
+    T106: Verifies API key is configured and service is ready
+    """
+    import os
+    
+    # Check if API key is configured
+    google_api_key = os.getenv("GOOGLE_API_KEY")
+    
+    if not google_api_key:
+        return {
+            "status": "unhealthy",
+            "service": "content-personalization-api",
+            "error": "GOOGLE_API_KEY not configured"
+        }, 500
+    
+    return {
+        "status": "healthy",
+        "service": "content-personalization-api",
+        "api_configured": True
+    }
 
 @app.get("/")
 async def root():
     """Root endpoint"""
     return {
-        "message": "Content Summarization API",
+        "message": "Content Personalization API",
         "version": "1.0.0",
         "docs": "/docs"
     }
 
-# TODO: Register routers (will be added in Phase 5)
-from src.routers import summarize, auth
+# T050: Register routers
+from src.routers import summarize, auth, personalize
 app.include_router(summarize.router, prefix="/api/v1", tags=["summarization"])
 app.include_router(auth.router, prefix="/api/v1/auth", tags=["authentication"])
+app.include_router(personalize.router, prefix="/api/v1", tags=["personalization"])
 
 if __name__ == "__main__":
     import uvicorn
