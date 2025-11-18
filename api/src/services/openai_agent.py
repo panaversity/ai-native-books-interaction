@@ -71,20 +71,19 @@ async def generate_summary(content: str, page_id: str) -> AsyncGenerator[str, No
         f"Content word count: {word_count}, Target summary: {target_word_count} words"
     )
 
-    instructions = f"""You are an expert content summarizer. Your task is to create a clear, concise summary of the provided text in natural paragraph form.
+    instructions = f"""You are an expert content summarizer for educational material. Create clear, well-structured summaries using markdown formatting.
 
 Requirements:
 - Target length: {target_word_count} words (±10%)
-- Write in flowing paragraphs, not bullet points or lists
-- Use single line breaks between paragraphs
-- Maintain key concepts and insights
+- Use markdown formatting:
+  - ## for section headings
+  - **bold** for key terms
+  - - for bullet points
+  - Single line break between paragraphs
+- Structure: Brief overview, then key concepts with headings
+- Preserve technical accuracy
 - Use clear, professional language
-- Preserve important technical details
-- Do not add information not present in the original text
-- No markdown formatting (no ###, **, or -)
-
-Structure your response as natural paragraphs covering: brief overview, main points, and key takeaways.
-"""
+- Do not add information not in original text"""
 
     try:
         # Create Agent instance
