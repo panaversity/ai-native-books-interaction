@@ -83,6 +83,7 @@ Requirements:
 - Structure: Brief overview, then key concepts with headings
 - Preserve technical accuracy
 - Use clear, professional language
+- Do not include meta-commentary like "Here's a summary of the provided content:"
 - Do not add information not in original text"""
 
     try:
